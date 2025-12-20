@@ -1,0 +1,10 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.12.2"
+manifest_format = "2.0"
+project_hash = "ec5db5c2e525f6926a9e2d54c429bd36873674ee"
+
+[[deps.ParallelLinearOracles]]
+path = "."
+uuid = "50334860-de34-4943-b2b8-ae20f493b614"
+version = "1.0.0-DEV"
