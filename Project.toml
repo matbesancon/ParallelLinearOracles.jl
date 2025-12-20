@@ -3,11 +3,27 @@ uuid = "50334860-de34-4943-b2b8-ae20f493b614"
 authors = ["matbesancon <mathieu.besancon@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+AcceleratedKernels = "6a4ca0a5-0e36-4168-a932-d9be78d558f1"
+FrankWolfe = "f55ce6ea-fdc5-4628-88c5-0087fe54bd30"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
+AcceleratedKernels = "0.4.3"
+CUDA = "5.9.5"
+FrankWolfe = "0.6.2"
+KernelAbstractions = "0.9.39"
+LinearAlgebra = "1.12.0"
+Random = "1.11.0"
+SparseArrays = "1.12.0"
 julia = "1.10.10"
 
 [extras]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["CUDA", "Test"]
