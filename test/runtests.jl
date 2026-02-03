@@ -38,13 +38,31 @@ using CUDA
     end
 end
 
+@testset "Norm balls" begin
+    n = 10
+    direction = randn(n)
+    radius = 3.5
+    @testset "Norm Inf $T" for T in (Int, Float32)
+        lmo = FrankWolfe.LpNormBallLMO{T, Inf}(radius)
+        lmo_acc = ParallelLinearOracles.AcceleratedLinearOracle(
+            lmo,
+            (; max_tasks=4),
+            nothing,
+        )
+        v = FrankWolfe.compute_extreme_point(lmo, direction)
+        v_acc = FrankWolfe.compute_extreme_point(lmo_acc, direction)
+        @test v ≈ v_acc
+        @test eltype(v_acc) == T
+    end
+end
+
 @testset "CUDA" begin
     if CUDA.functional()
         n = 10
         direction = CUDA.randn(n)
         K = 4
         radius = 3.5f0
-        @testset for base_lmo in (
+        @testset "$base_lmo" for base_lmo in (
             FrankWolfe.HyperSimplexLMO(K, radius),
             FrankWolfe.UnitHyperSimplexLMO(K, radius),
         )
@@ -58,7 +76,7 @@ end
             @test v ≈ collect(v_a)
         end
 
-        @testset for base_lmo in (
+        @testset "$base_lmo" for base_lmo in (
             FrankWolfe.ProbabilitySimplexLMO(radius),
             FrankWolfe.UnitSimplexLMO(radius),
         )
@@ -70,6 +88,18 @@ end
             v_a = FrankWolfe.compute_extreme_point(almo, direction)
             v = FrankWolfe.compute_extreme_point(base_lmo, collect(direction))
             @test v ≈ collect(v_a)
+        end
+        @testset "Norm Inf $T" for T in (Int, Float32)
+            lmo = FrankWolfe.LpNormBallLMO{T, Inf}(radius)
+            lmo_acc = ParallelLinearOracles.AcceleratedLinearOracle(
+                lmo,
+                (;),
+                nothing,
+            )
+            v = FrankWolfe.compute_extreme_point(lmo, collect(direction))
+            v_acc = FrankWolfe.compute_extreme_point(lmo_acc, direction)
+            @test v ≈ v_acc
+            @test eltype(v_acc) == T
         end
     end
 end
