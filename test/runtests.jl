@@ -41,7 +41,7 @@ end
 @testset "Norm balls" begin
     n = 10
     direction = randn(n)
-    radius = 3.5
+    radius = 3.0
     @testset "Norm Inf $T" for T in (Int, Float32)
         lmo = FrankWolfe.LpNormBallLMO{T, Inf}(radius)
         lmo_acc = ParallelLinearOracles.AcceleratedLinearOracle(
@@ -89,7 +89,7 @@ end
             v = FrankWolfe.compute_extreme_point(base_lmo, collect(direction))
             @test v ≈ collect(v_a)
         end
-        @testset "Norm Inf $T" for T in (Int, Float32)
+        @testset "Norm Inf $T" for T in (Float16, Float32)
             lmo = FrankWolfe.LpNormBallLMO{T, Inf}(radius)
             lmo_acc = ParallelLinearOracles.AcceleratedLinearOracle(
                 lmo,
@@ -98,7 +98,7 @@ end
             )
             v = FrankWolfe.compute_extreme_point(lmo, collect(direction))
             v_acc = FrankWolfe.compute_extreme_point(lmo_acc, direction)
-            @test v ≈ v_acc
+            @test v ≈ collect(v_acc)
             @test eltype(v_acc) == T
         end
     end
