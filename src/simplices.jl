@@ -1,10 +1,4 @@
 
-struct AcceleratedLinearOracle{LMO,KwargsType,BT} <: FrankWolfe.LinearMinimizationOracle
-    lmo::LMO
-    accelerated_options::KwargsType
-    buffer::BT
-end
-
 """
     FrankWolfe.compute_extreme_point(lmo::AcceleratedLinearOracle{<:Union{FrankWolfe.HyperSimplexLMO, FrankWolfe.UnitHyperSimplexLMO}})
 
